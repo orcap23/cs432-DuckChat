@@ -57,8 +57,7 @@ void send_error_message(struct sockaddr_in sock, string error_msg);
 
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	
 	if (argc != 3)
 	{
@@ -83,7 +82,7 @@ int main(int argc, char *argv[])
 
 	//struct sockaddr_in server;
 
-	struct hostent     *he;
+	struct hostent *he;
 
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
@@ -95,12 +94,11 @@ int main(int argc, char *argv[])
 	memcpy(&server.sin_addr, he->h_addr_list[0], he->h_length);
 
 	int err;
-
-	err = bind(s, (struct sockaddr*)&server, sizeof server);
+	err = bind((int)s, (struct sockaddr*)&server, sizeof(server));
 
 	if (err < 0)
 	{
-		perror("bind failed\n");
+		cout << "bind failed\n";
 	}
 	else
 	{
@@ -899,15 +897,7 @@ void handle_who_message(void *data, struct sockaddr_in sock)
 
 
 			}
-
-
-
-
 	}
-
-
-
-
 }
 
 
