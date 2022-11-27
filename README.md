@@ -1,1 +1,2 @@
-# cs432-DuckChat
+# cs432-p2
+by Madeline Porcaro
