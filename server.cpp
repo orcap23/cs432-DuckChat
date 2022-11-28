@@ -80,6 +80,7 @@ int main(int argc, char *argv[]) {
 		int port;
 		string ip;
 		string key;
+		size_t size = 64;
 
 		// loop through to add servers to map
 		// start at the the first neighbor_domain_name
@@ -89,9 +90,19 @@ int main(int argc, char *argv[]) {
 				cout << "error resolving hostname\n";
 				exit(1);
 			}
-			
-		}
+			memcpy(&aj_server.sin_addr, hj->h_addr_list[0], hj->h_length);
+			ip = inet_ntoa(aj_server.sin_addr);
+			// get port number
+			// port number should always go after domain
+			port = atoi(argv[i+1]);
+			snprintf(port_str, size, "%d", port);
 
+			aj_server.sin_family = AF_INET;
+			aj_server.sin_port = htons(port);
+
+			key = ip + "." + port_str;
+			adj_servers[key] = aj_server;
+		}
 		
 	}
 
