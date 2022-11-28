@@ -61,8 +61,14 @@ int main(int argc, char *argv[]) {
 	
 	if (argc != 3)
 	{
-		printf("Usage: ./server domain_name port_num\n");
+		cout<< "Usage: ./server domain_name port_num\n";
+		cout << "Usage: ./server domain_name port_num [optional]\n";
+		cout << "[optional]: neighbor_domain_name neighbor_domain_port\n";
 		exit(1);
+	} else {
+		// find adjacent servers
+
+		
 	}
 
 	char hostname[HOSTNAME_MAX];
@@ -94,7 +100,7 @@ int main(int argc, char *argv[]) {
 	memcpy(&server.sin_addr, he->h_addr_list[0], he->h_length);
 
 	int err;
-	err = bind((int)s, (struct sockaddr*)&server, sizeof(server));
+	err = bind(s, (struct sockaddr*)&server, sizeof(server));
 
 	if (err < 0)
 	{
@@ -102,12 +108,8 @@ int main(int argc, char *argv[]) {
 	}
 	else
 	{
-		//printf("bound socket\n");
+		cout << "bound socket\n";
 	}
-
-
-	
-
 
 	//testing maps end
 
@@ -115,11 +117,6 @@ int main(int argc, char *argv[]) {
 	string default_channel = "Common";
 	map<string,struct sockaddr_in> default_channel_users;
 	channels[default_channel] = default_channel_users;
-
-
-	
-	
-
 
 	while(1) //server runs for ever
 	{
@@ -139,7 +136,7 @@ int main(int argc, char *argv[]) {
 		
 		if (rc < 0)
 		{
-			printf("error in select\n");
+			cout<< ("error in select\n");
             getchar();
 		}
 		else
@@ -154,23 +151,9 @@ int main(int argc, char *argv[]) {
 				socket_data = 1;
 
 			}
-
-			
-
-			
-
-			
-
-
 		}
-
-		
 	}
-
-
-
 	return 0;
-
 }
 
 void handle_socket_input()
@@ -267,9 +250,9 @@ void handle_login_message(void *data, struct sockaddr_in sock)
 	//unsigned short short_port = sock.sin_port;
 	//cout << "short port: " << short_port << endl;
 	//cout << "port: " << port << endl;
-
+	size_t size = 64;
  	char port_str[6];
- 	sprintf(port_str, "%d", port);
+ 	snprintf(port_str, size, "%d", port);
 	//cout << "port: " << port_str << endl;
 
 	string key = ip + "." +port_str;
@@ -293,7 +276,8 @@ void handle_logout_message(struct sockaddr_in sock)
 	int port = sock.sin_port;
 
  	char port_str[6];
- 	sprintf(port_str, "%d", port);
+	size_t size = 64;
+ 	snprintf(port_str, size, "%d", port);
 	//cout << "port: " << port_str << endl;
 
 	string key = ip + "." +port_str;
@@ -382,7 +366,8 @@ void handle_join_message(void *data, struct sockaddr_in sock)
 	int port = sock.sin_port;
 
  	char port_str[6];
- 	sprintf(port_str, "%d", port);
+	size_t size = 64;
+ 	snprintf(port_str, size, "%d", port);
 	string key = ip + "." +port_str;
 
 
@@ -463,7 +448,8 @@ void handle_leave_message(void *data, struct sockaddr_in sock)
 	int port = sock.sin_port;
 
  	char port_str[6];
- 	sprintf(port_str, "%d", port);
+	size_t size = 64;
+ 	snprintf(port_str, size, "%d", port);
 	string key = ip + "." +port_str;
 
 
@@ -520,19 +506,11 @@ void handle_leave_message(void *data, struct sockaddr_in sock)
 					channels.erase(channel_iter);
 					cout << "server: " << "removing empty channel " << channel <<endl;
 				}
-
 			}
-
 
 		}
 
-
-
-
 	}
-
-
-
 }
 
 
@@ -561,7 +539,8 @@ void handle_say_message(void *data, struct sockaddr_in sock)
 	int port = sock.sin_port;
 
  	char port_str[6];
- 	sprintf(port_str, "%d", port);
+	size_t size = 64;
+ 	snprintf(port_str, size, "%d", port);
 	string key = ip + "." +port_str;
 
 
@@ -654,17 +633,8 @@ void handle_say_message(void *data, struct sockaddr_in sock)
 				cout << "server: " << username << " sends say message in " << channel <<endl;
 
 			}
-
-
 		}
-
-
-
-
 	}
-
-
-
 }
 
 
@@ -682,7 +652,8 @@ void handle_list_message(struct sockaddr_in sock)
 	int port = sock.sin_port;
 
  	char port_str[6];
- 	sprintf(port_str, "%d", port);
+	size_t size = 64;
+ 	snprintf(port_str, size, "%d", port);
 	string key = ip + "." +port_str;
 
 
@@ -795,7 +766,8 @@ void handle_who_message(void *data, struct sockaddr_in sock)
 	int port = sock.sin_port;
 
  	char port_str[6];
- 	sprintf(port_str, "%d", port);
+	size_t size = 64;
+ 	snprintf(port_str, size, "%d", port);
 	string key = ip + "." +port_str;
 
 
