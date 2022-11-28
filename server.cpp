@@ -41,6 +41,10 @@ map<string,int> active_usernames; //0-inactive , 1-active
 map<string,string> rev_usernames; //<ip+port in string, username>
 map<string,channel_type> channels;
 
+// maps for having adj servers with their own channels
+map<string, struct sockaddr_in> adj_servers;
+map<string, map<string, struct sockaddr_in>> server_channels;
+map<string, pair<string, time_t>> srv_timer;
 
 
 
@@ -59,14 +63,34 @@ void send_error_message(struct sockaddr_in sock, string error_msg);
 
 int main(int argc, char *argv[]) {
 	
-	if (argc != 3)
-	{
+	// if argc is less than 3 or even
+	// it can't be even because a domain name and port is needed
+	// for each server
+	if (argc < 3 || argc % 2 == 0) {
 		cout<< "Usage: ./server domain_name port_num\n";
 		cout << "Usage: ./server domain_name port_num [optional]\n";
 		cout << "[optional]: neighbor_domain_name neighbor_domain_port\n";
 		exit(1);
 	} else {
 		// find adjacent servers
+		struct sockaddr_in aj_server;
+		struct hostent *hj;
+		char srv_domain[HOSTNAME_MAX];
+		char port_str[6];
+		int port;
+		string ip;
+		string key;
+
+		// loop through to add servers to map
+		// start at the the first neighbor_domain_name
+		// loop to find every neighbor domain name
+		for(int i = 3; i< argc; i+=2) {
+			if ((hj == gethostbyname(argv[i])) == NULL) {
+				cout << "error resolving hostname\n";
+				exit(1);
+			}
+			
+		}
 
 		
 	}
